@@ -21,7 +21,7 @@
       id="ar-scene"
       vr-mode-ui="enabled: false;"
       loading-screen="enabled: false;"
-      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; maxDetectionRate: 60;"
       embedded
       gesture-detector
       renderer="alpha: true; colorManagement: true; logarithmicDepthBuffer: true; antialias: true"
@@ -42,10 +42,18 @@
         raycaster="objects: .clickable"
         emitevents="true"
         cursor="fuse: false; rayOrigin: mouse;"
+        minConfidence="0.3"
+        size="0.1"
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance="0.01"
+        smoothThreshold="5"
       >
         <a-image
           id="flag-sprite"
           src="#flag-image"
+          width="1"
+          height="1"
           scale="0.6 0.6 0.6"
           position="0 0 0"
           rotation="-90 0 0"
