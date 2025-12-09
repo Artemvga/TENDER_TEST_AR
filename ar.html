@@ -29,7 +29,7 @@
     <a-scene
       vr-mode-ui="enabled: false"
       embedded
-      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: true; maxDetectionRate: 60;"
     >
       <a-assets>
         <img id="flag-image" src="https://artemvga.github.io/TENDER_TEST_AR/assets/images/Flag.png" crossorigin="anonymous" />
@@ -40,6 +40,12 @@
         type="pattern"
         preset="custom"
         url="https://artemvga.github.io/TENDER_TEST_AR/assets/marker/Vasnecov.patt"
+        size="0.1"
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance="0.01"
+        smoothThreshold="5"
+        emitevents="true"
       >
         <a-image
           id="flag-sprite"
