@@ -6,12 +6,19 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="theme-color" content="#0b1021" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
     <title>AR Меню</title>
     <link rel="stylesheet" href="css/style.css" />
+    <script>
+      // Устанавливаем флаг, что пользователь переходит из меню
+      // Очищаем флаг при загрузке меню
+      sessionStorage.removeItem('fromMenu');
+    </script>
   </head>
   <body class="menu">
     <div class="menu-card">
-      <button class="primary-button" onclick="location.href='ar.html'">Начать</button>
+      <button class="primary-button" onclick="sessionStorage.setItem('fromMenu', 'true'); location.href='ar.html';">Начать</button>
     </div>
   </body>
 </html>

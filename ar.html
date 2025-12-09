@@ -2,9 +2,23 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#0b1021" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
     <title>AR Scene</title>
     <link rel="stylesheet" href="css/style.css" />
+    <script>
+      // Проверка: AR сцена должна открываться только из меню
+      // Если открыта напрямую (без флага fromMenu) - перенаправляем на меню
+      if (!sessionStorage.getItem('fromMenu')) {
+        window.location.href = 'index.html';
+      }
+      // Очищаем флаг после проверки, чтобы при следующем открытии снова требовалось меню
+      sessionStorage.removeItem('fromMenu');
+    </script>
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
     <script src="javascripts/main.js"></script>
