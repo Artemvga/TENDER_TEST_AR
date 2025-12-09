@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#0b1021" />
+    <title>AR Scene</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
+    <script src="javascripts/main.js"></script>
+  </head>
+  <body class="ar-body">
+    <button class="back-button" onclick="location.href='index.html'">Назад</button>
+
+    <a-scene
+      id="ar-scene"
+      vr-mode-ui="enabled: false;"
+      loading-screen="enabled: false;"
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      embedded
+      gesture-detector
+      renderer="alpha: true; logarithmicDepthBuffer: true; antialias: true"
+    >
+      <a-assets>
+        <img id="flag-image" src="assets/images/Flag.png" crossorigin="anonymous" />
+      </a-assets>
+
+      <a-marker
+        id="marker-flag"
+        type="pattern"
+        preset="custom"
+        url="assets/marker/Vasnecov.patt"
+        raycaster="objects: .clickable"
+        emitevents="true"
+        cursor="fuse: false; rayOrigin: mouse;"
+      >
+        <a-image
+          id="flag-sprite"
+          src="#flag-image"
+          scale="0.6 0.6 0.6"
+          position="0 0 0"
+          rotation="-90 0 0"
+          transparent="true"
+          visible="false"
+          class="clickable"
+          gesture-handler
+        ></a-image>
+      </a-marker>
+
+      <a-entity camera></a-entity>
+    </a-scene>
+  </body>
+</html>
+
