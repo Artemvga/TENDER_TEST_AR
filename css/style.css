@@ -143,29 +143,74 @@ a-scene canvas {
 .a-enter-vr-button,
 .a-enter-ar-button,
 .a-orientation-modal__message,
-.arjs-video-container > * {
+.arjs-video-container > *,
+.a-loader,
+.a-loader-title,
+.a-loader-spinner,
+.a-splash-screen,
+.a-splash,
+[class*="arjs"],
+[class*="debug"],
+[class*="video"],
+[class*="panel"],
+[class*="loader"],
+[class*="splash"],
+[id*="arjs"],
+[id*="debug"],
+[id*="video"],
+[id*="panel"] {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
-}
-
-/* Скрытие любых панелей отладки */
-[class*="arjs"],
-[class*="debug"],
-[class*="video"],
-[class*="panel"] {
-  display: none !important;
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
 }
 
 /* Убеждаемся, что видео камеры занимает весь экран без панелей */
-.arjs-video-container {
+.arjs-video-container,
+.arjs-video {
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
   width: 100% !important;
   height: 100% !important;
   z-index: -1 !important;
+  background: transparent !important;
+}
+
+/* Скрытие всех возможных overlay элементов */
+body.ar-body > *:not(a-scene):not(.back-button),
+body.ar-body a-scene > *:not(a-marker):not(a-assets):not(a-entity[camera]) {
+  display: none !important;
+}
+
+/* Убеждаемся, что нет никаких overlay поверх камеры */
+body.ar-body::before,
+body.ar-body::after,
+a-scene::before,
+a-scene::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Скрытие всех div и других элементов, которые могут быть overlay */
+body.ar-body div:not(.back-button),
+body.ar-body span:not(.back-button),
+body.ar-body section:not(.back-button),
+body.ar-body article:not(.back-button),
+body.ar-body aside:not(.back-button),
+body.ar-body header:not(.back-button),
+body.ar-body footer:not(.back-button),
+body.ar-body nav:not(.back-button) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 @media (max-width: 480px) {
