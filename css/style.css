@@ -13,7 +13,7 @@ body {
   width: 100%;
   height: 100%;
   height: 100dvh;
-  background: #0b1021;
+  background: transparent !important;
   color: #e7ecf4;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow: hidden;
@@ -83,8 +83,12 @@ body {
 }
 
 body.ar-body,
-html:has(body.ar-body) {
+html:has(body.ar-body),
+html,
+body.ar-body html {
   background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
 }
 
 .back-button {
@@ -122,10 +126,21 @@ a-scene {
   position: absolute;
   top: 0;
   left: 0;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
 }
 
 a-scene canvas {
   background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+a-scene * {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
 }
 
 /* Скрытие всех панелей AR.js и A-Frame */
@@ -181,6 +196,23 @@ a-scene canvas {
   height: 100% !important;
   z-index: -1 !important;
   background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* УБИРАЕМ ВСЕ ФОНЫ НА AR СТРАНИЦЕ */
+body.ar-body *,
+body.ar-body *::before,
+body.ar-body *::after {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* Исключение только для кнопки назад */
+body.ar-body .back-button {
+  background: rgba(11, 16, 33, 0.85) !important;
+  background-color: rgba(11, 16, 33, 0.85) !important;
 }
 
 /* Скрытие всех возможных overlay элементов */
