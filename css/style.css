@@ -82,6 +82,11 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+body.ar-body,
+html:has(body.ar-body) {
+  background: transparent !important;
+}
+
 .back-button {
   position: fixed;
   top: calc(env(safe-area-inset-top, 0px) + 12px);
@@ -117,6 +122,10 @@ a-scene {
   position: absolute;
   top: 0;
   left: 0;
+}
+
+a-scene canvas {
+  background: transparent !important;
 }
 
 @media (max-width: 480px) {
