@@ -245,6 +245,86 @@ body.ar-body nav:not(.back-button) {
   pointer-events: none !important;
 }
 
+/* СКРЫВАЕМ ВСЕ БЕЛЫЕ ПАНЕЛИ И ЭЛЕМЕНТЫ С БЕЛЫМ ФОНОМ */
+body.ar-body *[style*="background"]:not(.back-button),
+body.ar-body *[style*="background-color"]:not(.back-button),
+body.ar-body div[style*="white"],
+body.ar-body div[style*="#fff"],
+body.ar-body div[style*="#ffffff"],
+body.ar-body *[style*="rgb(255"],
+body.ar-body *[style*="rgba(255"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Скрываем все элементы, которые занимают больше 30% экрана (вероятно панели) */
+body.ar-body > *:not(a-scene):not(.back-button) {
+  max-width: 0 !important;
+  max-height: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+}
+
+/* Скрываем все элементы с z-index выше сцены */
+body.ar-body > *:not(a-scene):not(.back-button)[style*="z-index"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* УБИРАЕМ ВСЕ ВОЗМОЖНЫЕ ПАНЕЛИ - МАКСИМАЛЬНО АГРЕССИВНО */
+body.ar-body iframe,
+body.ar-body object,
+body.ar-body embed,
+body.ar-body applet,
+body.ar-body form,
+body.ar-body fieldset,
+body.ar-body legend,
+body.ar-body table,
+body.ar-body thead,
+body.ar-body tbody,
+body.ar-body tfoot,
+body.ar-body tr,
+body.ar-body th,
+body.ar-body td {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Скрываем все элементы, которые могут быть overlay */
+body.ar-body [role="dialog"],
+body.ar-body [role="alert"],
+body.ar-body [role="alertdialog"],
+body.ar-body [role="banner"],
+body.ar-body [role="complementary"],
+body.ar-body [role="contentinfo"],
+body.ar-body [role="main"],
+body.ar-body [role="navigation"],
+body.ar-body [role="region"],
+body.ar-body [role="search"],
+body.ar-body [role="toolbar"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 @media (max-width: 480px) {
   .menu-card {
     padding: 20px;
