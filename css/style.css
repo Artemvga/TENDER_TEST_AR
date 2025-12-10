@@ -1,216 +1,44 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+<script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <script src="javascripts/main.js"></script>
+  </head>
+  <body>
+    <!-- Информационная панель -->
+    <div id="info-panel" class="info-panel">
+      <div class="info-content">
+        <h2>Богатыри</h2>
+        <p>Картина Виктора Васнецова "Богатыри" была написана в 1898 году. На ней изображены три русских богатыря: Илья Муромец, Добрыня Никитич и Алёша Попович.</p>
+        <button class="close-button" onclick="document.getElementById('info-panel').classList.remove('visible')">Закрыть</button>
+      </div>
+    </div>
 
-html,
-body {
-  width: 100%;
-  height: 100%;
-  height: 100dvh;
-  overflow: hidden;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none;
-  touch-action: manipulation;
-  /* Chrome оптимизации */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overscroll-behavior: none;
-  -webkit-overflow-scrolling: touch;
-}
+    <a-scene
+      vr-mode-ui="enabled: false"
+      embedded
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+    >
+      <a-assets>
+        <img id="flag-image" src="https://artemvga.github.io/TENDER_TEST_AR/assets/images/Flag.png" crossorigin="anonymous" />
+      </a-assets>
 
-/* Меню */
-.menu {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100vh;
-  height: 100dvh;
-  background: #0b1021;
-  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-}
+      <a-marker
+        id="marker-flag"
+        type="pattern"
+        preset="custom"
+        url="https://artemvga.github.io/TENDER_TEST_AR/assets/marker/Vasnecov.patt"
+      >
+        <a-image
+          id="flag-sprite"
+          src="#flag-image"
+          scale="0.6 0.6 0.6"
+          position="0 0 0"
+          rotation="-90 0 0"
+          transparent="true"
+          visible="false"
+          class="clickable"
+        ></a-image>
+      </a-marker>
 
-.menu-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 32px;
-  text-align: center;
-  width: calc(100% - 32px);
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-.primary-button {
-  padding: 14px 28px;
-  min-height: 44px;
-  border: none;
-  border-radius: 8px;
-  background: #4ecdc4;
-  color: #0b1021;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  width: 100%;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: rgba(78, 205, 196, 0.3);
-  transition: opacity 0.2s, transform 0.1s;
-}
-
-.primary-button:hover {
-  opacity: 0.9;
-}
-
-.primary-button:active {
-  opacity: 0.8;
-  transform: scale(0.98);
-}
-
-/* AR Сцена */
-a-scene {
-  width: 100%;
-  height: 100vh;
-  height: 100dvh;
-  display: block;
-  position: relative;
-}
-
-/* Панель информации */
-.info-panel {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 2000;
-}
-
-.info-panel.hidden {
-  display: none;
-}
-
-.info-card {
-  background: #111827;
-  color: #e5e7eb;
-  padding: 20px;
-  border-radius: 12px;
-  width: calc(100% - 40px);
-  max-width: 360px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-  text-align: center;
-}
-
-.info-title {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-
-.info-text {
-  font-size: 14px;
-  margin-bottom: 16px;
-}
-
-.back-button {
-  position: fixed;
-  top: calc(env(safe-area-inset-top, 0px) + 12px);
-  left: calc(env(safe-area-inset-left, 0px) + 12px);
-  z-index: 1000;
-  padding: 12px 20px;
-  min-height: 44px;
-  border: none;
-  border-radius: 8px;
-  background: rgba(11, 16, 33, 0.9);
-  color: #fff;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
-  transition: opacity 0.2s, transform 0.1s;
-}
-
-.back-button:hover {
-  opacity: 0.8;
-}
-
-.back-button:active {
-  opacity: 0.7;
-  transform: scale(0.95);
-}
-
-/* Медиа-запросы для мобильных устройств */
-@media (max-width: 480px) {
-  .menu-card {
-    padding: 24px;
-    width: calc(100% - 24px);
-  }
-
-  .primary-button {
-    font-size: 16px;
-    padding: 16px 24px;
-  }
-
-  .back-button {
-    padding: 10px 16px;
-    font-size: 13px;
-    top: calc(env(safe-area-inset-top, 0px) + 8px);
-    left: calc(env(safe-area-inset-left, 0px) + 8px);
-  }
-}
-
-@media (max-height: 500px) {
-  .menu-card {
-    padding: 20px;
-  }
-
-  .primary-button {
-    padding: 12px 20px;
-    min-height: 40px;
-  }
-}
-
-/* Поддержка для iOS Safari */
-@supports (-webkit-touch-callout: none) {
-  html,
-  body {
-    height: -webkit-fill-available;
-  }
-
-  .menu {
-    min-height: -webkit-fill-available;
-  }
-
-  a-scene {
-    height: -webkit-fill-available;
-  }
-}
-
-/* Поддержка для Chrome на Android */
-@supports (height: 100dvh) {
-  html,
-  body {
-    height: 100dvh;
-  }
-
-  .menu {
-    height: 100dvh;
-  }
-
-  a-scene {
-    height: 100dvh;
-  }
-}
-
-/* Оптимизация для Chrome */
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-  .primary-button,
-  .back-button {
-    -webkit-appearance: none;
-    appearance: none;
-  }
-}
+      <a-entity camera></a-entity>
+    </a-scene>
+  </body>
