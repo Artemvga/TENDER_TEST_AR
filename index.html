@@ -9,9 +9,120 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="format-detection" content="telephone=no" />
     <title>AR Меню</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(135deg, #0b1021 0%, #1a1f3a 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        color: #fff;
+      }
+
+      .menu-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: 24px;
+        padding: 48px 32px;
+        max-width: 400px;
+        width: 100%;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        text-align: center;
+      }
+
+      .menu-icon {
+        font-size: 64px;
+        margin-bottom: 24px;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+      }
+
+      .menu-title {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        background: linear-gradient(135deg, #4ecdc4 0%, #44a8a0 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .menu-description {
+        font-size: 16px;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 32px;
+      }
+
+      .primary-button {
+        width: 100%;
+        padding: 16px 32px;
+        min-height: 56px;
+        border: none;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #4ecdc4 0%, #44a8a0 100%);
+        color: #0b1021;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        touch-action: manipulation;
+        transition: transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 8px 24px rgba(78, 205, 196, 0.3);
+        -webkit-appearance: none;
+        appearance: none;
+      }
+
+      .primary-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 32px rgba(78, 205, 196, 0.4);
+      }
+
+      .primary-button:active {
+        transform: translateY(0);
+        box-shadow: 0 4px 16px rgba(78, 205, 196, 0.3);
+      }
+
+      .menu-hint {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.5);
+        margin-top: 16px;
+      }
+
+      @media (max-width: 480px) {
+        .menu-card {
+          padding: 40px 24px;
+        }
+
+        .menu-icon {
+          font-size: 56px;
+        }
+
+        .menu-title {
+          font-size: 28px;
+        }
+
+        .menu-description {
+          font-size: 15px;
+        }
+      }
+    </style>
   </head>
-  <body class="menu">
+  <body>
     <div class="menu-card">
       <div class="menu-icon">📱</div>
       <h1 class="menu-title">AR Богатыри</h1>
@@ -21,15 +132,17 @@
     </div>
 
     <script>
-      // Очищаем флаг при загрузке меню
-      sessionStorage.removeItem('fromMenu');
-
-      // Обработка кнопки старта
+      const arData = {
+        fromMenu: 'true'
+      };
+      
       document.getElementById('startButton').addEventListener('click', function() {
-        // Устанавливаем флаг перехода из меню
-        sessionStorage.setItem('fromMenu', 'true');
-        // Переходим на AR сцену
-        window.location.href = 'ar.html';
+        try {
+          localStorage.setItem('arData', JSON.stringify(arData));
+        } catch (e) {
+          console.log('LocalStorage not available, using URL parameter');
+        }
+        window.location.href = 'ar.html?from=menu';
       });
     </script>
   </body>

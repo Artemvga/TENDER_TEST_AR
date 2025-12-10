@@ -9,21 +9,202 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="format-detection" content="telephone=no" />
     <title>AR Scene</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <script>
-      // Проверка: AR сцена должна открываться только из меню
-      // Если открыта напрямую (без флага fromMenu) - перенаправляем на меню
-      if (!sessionStorage.getItem('fromMenu')) {
-        window.location.href = 'index.html';
-      }
-      // Очищаем флаг после проверки, чтобы при следующем открытии снова требовалось меню
-      sessionStorage.removeItem('fromMenu');
-    </script>
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-    <script src="javascripts/main.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      body {
+        margin: 0;
+        overflow: hidden;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      }
+
+      /* Кнопка "Назад" */
+      .back-button {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 3000;
+        padding: 12px 20px;
+        min-height: 44px;
+        border: none;
+        border-radius: 12px;
+        background: rgba(11, 16, 33, 0.8);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        color: #4ecdc4;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        touch-action: manipulation;
+        transition: all 0.2s;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(78, 205, 196, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        -webkit-appearance: none;
+        appearance: none;
+      }
+
+      .back-button:active {
+        transform: scale(0.95);
+        background: rgba(11, 16, 33, 0.9);
+      }
+
+      /* Информационная панель */
+      .info-panel {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(11, 16, 33, 0.95);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-top-left-radius: 24px;
+        border-top-right-radius: 24px;
+        padding: 24px;
+        padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+        z-index: 2000;
+        transform: translateY(100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.4);
+        max-height: 70vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        border-top: 1px solid rgba(78, 205, 196, 0.2);
+      }
+
+      .info-panel.visible {
+        transform: translateY(0);
+      }
+
+      .info-content {
+        color: #fff;
+      }
+
+      .info-content h2 {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #4ecdc4;
+      }
+
+      .info-content .subtitle {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.6);
+        margin-bottom: 20px;
+      }
+
+      .info-content p {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 24px;
+        color: rgba(255, 255, 255, 0.85);
+      }
+
+      .close-button {
+        width: 100%;
+        padding: 16px 32px;
+        min-height: 52px;
+        border: none;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #4ecdc4 0%, #44a8a0 100%);
+        color: #0b1021;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        touch-action: manipulation;
+        transition: transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 8px 24px rgba(78, 205, 196, 0.3);
+        -webkit-appearance: none;
+        appearance: none;
+      }
+
+      .close-button:active {
+        transform: scale(0.98);
+        box-shadow: 0 4px 16px rgba(78, 205, 196, 0.3);
+      }
+
+      /* Индикатор поиска маркера */
+      .marker-hint {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        background: rgba(11, 16, 33, 0.8);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        padding: 20px 32px;
+        border-radius: 16px;
+        color: #fff;
+        text-align: center;
+        border: 1px solid rgba(78, 205, 196, 0.3);
+        pointer-events: none;
+      }
+
+      .marker-hint.hidden {
+        display: none;
+      }
+
+      @media (max-width: 480px) {
+        .back-button {
+          top: 16px;
+          left: 16px;
+          padding: 10px 16px;
+          font-size: 15px;
+        }
+
+        .info-panel {
+          padding: 20px;
+          padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+        }
+
+        .info-content h2 {
+          font-size: 24px;
+        }
+
+        .info-content .subtitle {
+          font-size: 15px;
+        }
+
+        .info-content p {
+          font-size: 15px;
+        }
+      }
+    </style>
   </head>
   <body>
+    <!-- Кнопка "Назад" -->
+    <button class="back-button" id="backButton">
+      <span>←</span>
+      <span>Назад</span>
+    </button>
+
+    <!-- Подсказка для поиска маркера -->
+    <div class="marker-hint" id="markerHint">
+      <p>🎯 Наведите камеру на маркер</p>
+    </div>
+
+    <!-- Информационная панель -->
+    <div class="info-panel" id="infoPanel">
+      <div class="info-content">
+        <h2>Виктор Васнецов</h2>
+        <p class="subtitle">1848-1926</p>
+        <p>Великий русский художник, мастер исторической и фольклорной живописи. Его картина "Богатыри" (1898) — один из самых узнаваемых шедевров русского искусства, находится в Третьяковской галерее в Москве.</p>
+        <p>Васнецов работал над этим полотном почти 20 лет. На картине изображены три былинных богатыря: Илья Муромец, Добрыня Никитич и Алёша Попович, стоящие на страже русских земель.</p>
+        <button class="close-button" id="closeButton">Закрыть</button>
+      </div>
+    </div>
+
+    <!-- A-Frame AR Scene -->
     <a-scene
       vr-mode-ui="enabled: false"
       embedded
@@ -52,5 +233,121 @@
 
       <a-entity camera></a-entity>
     </a-scene>
+
+    <script>
+      // Проверка доступа из меню
+      (function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const fromMenu = urlParams.get('from') === 'menu';
+        let hasAccess = fromMenu;
+
+        if (!hasAccess) {
+          try {
+            const stored = localStorage.getItem('arData');
+            if (stored) {
+              const data = JSON.parse(stored);
+              hasAccess = data.fromMenu === 'true';
+              localStorage.removeItem('arData');
+            }
+          } catch (e) {
+            console.log('Error checking access');
+          }
+        }
+
+        if (!hasAccess) {
+          window.location.href = 'index.html';
+        }
+      })();
+
+      // Кнопка "Назад"
+      document.getElementById('backButton').addEventListener('click', function() {
+        window.location.href = 'index.html';
+      });
+
+      // Основная логика AR
+      window.addEventListener("DOMContentLoaded", () => {
+        const scene = document.querySelector("a-scene");
+        const infoPanel = document.getElementById("infoPanel");
+        const closeButton = document.getElementById("closeButton");
+        const markerHint = document.getElementById("markerHint");
+        
+        if (!scene || !infoPanel) return;
+
+        // Закрытие панели
+        closeButton.addEventListener("click", () => {
+          infoPanel.classList.remove("visible");
+        });
+
+        scene.addEventListener("loaded", () => {
+          const marker = document.getElementById("marker-flag");
+          const flag = document.getElementById("flag-sprite");
+
+          if (!marker || !flag) return;
+
+          // Показываем/скрываем флаг при обнаружении маркера
+          marker.addEventListener("markerFound", () => {
+            flag.setAttribute("visible", true);
+            markerHint.classList.add("hidden");
+          });
+
+          marker.addEventListener("markerLost", () => {
+            flag.setAttribute("visible", false);
+            infoPanel.classList.remove("visible");
+            markerHint.classList.remove("hidden");
+          });
+
+          // Обработка касания для мобильных устройств
+          let touchStartTime = 0;
+          let touchStartPos = { x: 0, y: 0 };
+          let lastTapTime = 0;
+
+          const handleTouch = (event) => {
+            if (!flag.getAttribute("visible")) return;
+
+            const touch = event.touches?.[0] || event.changedTouches?.[0];
+            if (!touch) return;
+
+            const currentTime = Date.now();
+            const currentPos = { x: touch.clientX, y: touch.clientY };
+
+            if (event.type === "touchstart") {
+              touchStartTime = currentTime;
+              touchStartPos = currentPos;
+            } else if (event.type === "touchend") {
+              const timeDiff = currentTime - touchStartTime;
+              const posDiff = Math.sqrt(
+                Math.pow(currentPos.x - touchStartPos.x, 2) +
+                Math.pow(currentPos.y - touchStartPos.y, 2)
+              );
+
+              // Проверка на быстрый тап
+              if (timeDiff < 300 && posDiff < 10) {
+                // Защита от двойного тапа
+                if (currentTime - lastTapTime > 300) {
+                  infoPanel.classList.add("visible");
+                  lastTapTime = currentTime;
+                }
+              }
+            }
+          };
+
+          // Обработчики для мобильных
+          scene.addEventListener("touchstart", handleTouch, { passive: true });
+          scene.addEventListener("touchend", handleTouch, { passive: true });
+
+          // Обработчик для десктопа
+          scene.addEventListener("click", (event) => {
+            // Игнорируем клики по кнопкам
+            if (event.target.closest('.back-button') || event.target.closest('.close-button')) {
+              return;
+            }
+            
+            if (flag.getAttribute("visible")) {
+              infoPanel.classList.add("visible");
+            }
+          });
+        });
+      });
+    </script>
   </body>
 </html>
