@@ -10,15 +10,27 @@
     <meta name="format-detection" content="telephone=no" />
     <title>AR Меню</title>
     <link rel="stylesheet" href="css/style.css" />
-    <script>
-      // Устанавливаем флаг, что пользователь переходит из меню
-      // Очищаем флаг при загрузке меню
-      sessionStorage.removeItem('fromMenu');
-    </script>
   </head>
   <body class="menu">
     <div class="menu-card">
-      <button class="primary-button" onclick="sessionStorage.setItem('fromMenu', 'true'); location.href='ar.html';">Начать</button>
+      <div class="menu-icon">📱</div>
+      <h1 class="menu-title">AR Богатыри</h1>
+      <p class="menu-description">Наведите камеру на маркер картины Васнецова, чтобы увидеть интерактивный флаг</p>
+      <button class="primary-button" id="startButton">Начать AR</button>
+      <p class="menu-hint">Требуется доступ к камере</p>
     </div>
+
+    <script>
+      // Очищаем флаг при загрузке меню
+      sessionStorage.removeItem('fromMenu');
+
+      // Обработка кнопки старта
+      document.getElementById('startButton').addEventListener('click', function() {
+        // Устанавливаем флаг перехода из меню
+        sessionStorage.setItem('fromMenu', 'true');
+        // Переходим на AR сцену
+        window.location.href = 'ar.html';
+      });
+    </script>
   </body>
 </html>
