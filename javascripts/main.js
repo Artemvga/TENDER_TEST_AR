@@ -4,10 +4,24 @@ window.addEventListener("DOMContentLoaded", () => {
   const scene = document.querySelector("a-scene");
   if (!scene) return;
 
-  scene.addEventListener("loaded", () => {
-    const marker = document.getElementById("marker-flag");
-    const flag = document.getElementById("flag-sprite");
+  const panel = document.getElementById("info-panel");
+  const closeBtn = document.getElementById("info-close");
+  const marker = document.getElementById("marker-flag");
+  const flag = document.getElementById("flag-sprite");
 
+  const hidePanel = () => {
+    if (panel) panel.classList.add("hidden");
+  };
+
+  const showPanel = () => {
+    if (panel) panel.classList.remove("hidden");
+  };
+
+  if (closeBtn) {
+    closeBtn.addEventListener("click", hidePanel);
+  }
+
+  scene.addEventListener("loaded", () => {
     if (!marker || !flag) return;
 
     marker.addEventListener("markerFound", () => {
@@ -16,6 +30,12 @@ window.addEventListener("DOMContentLoaded", () => {
 
     marker.addEventListener("markerLost", () => {
       flag.setAttribute("visible", false);
+      hidePanel();
+    });
+
+    flag.addEventListener("click", () => {
+      // Показываем панель при клике по флагу
+      showPanel();
     });
   });
 });
